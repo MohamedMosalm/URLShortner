@@ -18,6 +18,9 @@ spec:
           env:
             - { name: SPRING_DATASOURCE_URL, value: "jdbc:postgresql://postgres:5432/urlshortener" }
             - { name: SPRING_DATA_REDIS_HOST, value: redis }
+            - name: APP_AUTH_SECRET
+              valueFrom:
+                secretKeyRef: { name: app-auth, key: secret }
 ---
 apiVersion: v1
 kind: Service
