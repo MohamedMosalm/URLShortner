@@ -7,12 +7,10 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'U', passwordVariable: 'P')]) {
           sh '''
-            sed -i "s#image: .*#image: $IMAGE:$BUILD_NUMBER#" k8s/app.yaml
-            git diff --quiet && exit 0
-            git config user.email jenkins@ci && git config user.name jenkins
-            git commit -am "ci: deploy build $BUILD_NUMBER [skip ci]"
-            git push https://$U:$P@github.com/MohamedMosalm/URLShortner.git HEAD:main
-          '''
+            echo "$P" | docker login -u "$U" --password-stdin
+            docker build -t $IMAGE:$BUILD_NUMBER .
+            docker push $IMAGE:$BUILD_NUMBER
+        '''
         }
       }
     }
