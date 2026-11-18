@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: url-shortener
-          image: docker.io/mohamedmosalm/url-shortener:9
+          image: docker.io/mohamedmosalm/url-shortener:11
           ports:
             - containerPort: 8080
           env:
