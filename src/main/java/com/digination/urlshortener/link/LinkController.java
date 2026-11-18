@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,15 +44,6 @@ public class LinkController {
     @GetMapping("/api/links/{code}")
     public LinkResponse get(@PathVariable String code, Principal me) {
         return toResponse(code, service.get(code, me.getName()).orElseThrow(() -> notFound(code)));
-    }
-
-    @PutMapping("/api/links/{code}")
-    public LinkResponse update(@PathVariable String code, @Valid @RequestBody LinkRequest request, Principal me) {
-        String longUrl = request.url().trim();
-        if (!service.update(code, longUrl, me.getName())) {
-            throw notFound(code);
-        }
-        return toResponse(code, longUrl);
     }
 
     @DeleteMapping("/api/links/{code}")

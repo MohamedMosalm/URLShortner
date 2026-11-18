@@ -61,12 +61,6 @@ public class LinkService {
     }
 
     @CacheEvict(value = "links", key = "#code")
-    public boolean update(String code, String longUrl, String owner) {
-        return db.sql("update links set url = ? where code = ? and owner = ?")
-                .params(validate(longUrl), code, owner).update() == 1;
-    }
-
-    @CacheEvict(value = "links", key = "#code")
     public boolean delete(String code, String owner) {
         return db.sql("delete from links where code = ? and owner = ?").params(code, owner).update() == 1;
     }

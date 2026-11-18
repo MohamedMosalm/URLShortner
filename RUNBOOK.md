@@ -98,8 +98,7 @@ curl -H "$AUTH" localhost:8080/api/links
 curl -H "$AUTH" localhost:8080/api/links/$CODE
 curl -i localhost:8080/$CODE
 
-# update, delete
-curl -X PUT localhost:8080/api/links/$CODE -H "$AUTH" -H "Content-Type: application/json" -d '{"url":"https://example.com"}'
+# delete
 curl -i -X DELETE -H "$AUTH" localhost:8080/api/links/$CODE
 ```
 
@@ -111,7 +110,7 @@ Expected results:
 | create link | 201 with `shortCode`, `shortUrl`, `longUrl` |
 | list or read without the token | 401 |
 | redirect | 302 with a `Location` header to the original URL |
-| read, update, delete of an unknown code | 404 |
+| read or delete of an unknown code | 404 |
 | URL without http or https | 400 |
 
 ### Look inside Postgres and Redis
@@ -121,7 +120,7 @@ kubectl exec deploy/postgres -n url-shortener -- psql -U postgres -d urlshortene
 kubectl exec deploy/redis -n url-shortener -- redis-cli keys '*'
 ```
 
-After you call the redirect once, Redis holds a key like `links::<code>`. After the update or delete call the key is gone, because the app clears the cache entry.
+After you call the redirect once, Redis holds a key like `links::<code>`. After the delete call the key is gone, because the app clears the cache entry.
 
 ## 4. Run the CI/CD flow
 
